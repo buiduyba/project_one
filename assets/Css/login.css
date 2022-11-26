@@ -1,0 +1,56 @@
+.container{
+    height: 100vh;
+    background-color: #100720;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.title_login{
+   color: #7895B2 ;
+}
+
+.title_register{
+    color: #000;
+}
+
+
+.form__login-box{
+    background-color: #ffff;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    width: 350px;
+}
+
+.input__bag {
+    margin: 30px 0px;
+}
+
+
+.input__bag .contact__input {
+    outline: none;
+    border: none;
+    width: 100%;
+    border-bottom: 1px solid rgb(141, 139, 139);
+    font-size: 15px;
+}
+
+.contact__btn {
+    background-color: #100720;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    float: right;
+    overflow-y: auto;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
