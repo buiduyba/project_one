@@ -69,9 +69,17 @@ if(isset($_GET['url'])){
                 }
             }
             break;
+            case 'binh-luan-delete':
+                if(isset($_GET["id"])){
+                    deleteCmtt($_GET["id"]);
+                    header('Location: ' . $_SERVER['HTTP_REFERER']);
+                }
+                   
+                break;
+
         // Trang sản phẩm
         case 'san-pham':
-           
+           echo 'truong';
             if(isset($_GET['cate'])){
                 $products =  getProductWhereCate($_GET['cate']);
             }else if(isset($_GET['size'])){
@@ -105,14 +113,7 @@ if(isset($_GET['url'])){
                 break;
 
 
-         case 'binh-luan-delete':
-                if(isset($_GET["id"])){
-                    deleteCmtt($_GET["id"]);
-                    header('Location: ' . $_SERVER['HTTP_REFERER']);
-                }
-                   
-                break;
-
+        
             // Sản phẩm chi tiết
          case 'san-pham-chi-tiet':
             $error = '';
