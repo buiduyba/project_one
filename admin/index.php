@@ -49,6 +49,7 @@ if(isset($_GET['url']) && isset($_SESSION["user"])){
             break;
         // Sửa danh mục
         case 'category-edit':
+            echo "ngoductruong";
             $error= '';
             $cates = getCateAll();
             if($_GET['id']){
@@ -59,6 +60,7 @@ if(isset($_GET['url']) && isset($_SESSION["user"])){
                 echo 'ERROR';
                 die;
             }
+
             break;
         // Trang lưu sửa
         case 'category-edit-save':
