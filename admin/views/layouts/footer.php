@@ -12,6 +12,7 @@ $(document).ready(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
     for (var i = 0; i < navLink.length; i++) {
+        navLink[i].classList.remove('active');
         if (params.url.includes(navLink[i].getAttribute("name"))) {
             navLink[i].classList.add('active');
         }

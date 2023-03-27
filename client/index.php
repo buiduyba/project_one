@@ -7,177 +7,273 @@ include('./../model/order.php');
 include('./../model/category.php');
 include('./../model/size.php');
 include('./../model/user.php');
+
 include('./../helper/baseUrl.php');
 include('./../helper/dd.php');
 
-if(isset($_GET['dang-ky'])){
+
+if (isset($_GET['dang-ky'])) {
     include('./views/register.php');
     die;
-}else if (isset($_GET['dang-nhap'])){
+} else if (isset($_GET['dang-nhap'])) {
     include('./views/login.php');
     die;
-}else if(isset($_GET['logout'])){
-        unset($_SESSION["user"]);
+} else if (isset($_GET['logout'])) {
+    unset($_SESSION["user"]);
 }
 
-if(isset($_SESSION["user"])){
-    $user =$_SESSION["user"];
+if (isset($_SESSION["user"])) {
+    $user = $_SESSION["user"];
 }
 include('./views/layouts/header.php');
 
 
-if(isset($_GET['url'])){
+if (isset($_GET['url'])) {
     $cates =  getCateAll();
     $size =  getSizeWhereType(1);
     $color =  getSizeWhereType(2);
     switch ($_GET['url']) {
-        //  Lưu đăng ký
-        case 'dang-ky-save':
-            if(isset($_POST)){
-                if(!empty($_FILES["kh_avatar"])){
-                    $fileName =  $_FILES["kh_avatar"]["name"];
-                    move_uploaded_file( $_FILES["kh_avatar"]["tmp_name"]  ,'../upload/' .   $fileName );
-                }
-                $_POST['kh_avatar'] = $fileName;
-                $_POST['kh_password'] = password_hash( $_POST['kh_password']  , PASSWORD_DEFAULT);
-                register($_POST);
-                header("location:".BASE_CLIENT."?dang-nhap");
-                die;
-            }
-            break;
-          //  Lưu đăng ký
-        case 'dang-nhap-save':
-            if(isset($_POST)){
-                if($_POST["email"] != '' && $_POST["password"] != ''){
-                    for ($i=0; $i < count(getAllUser()); $i++) { 
-                        if(trim(getAllUser()[$i]["kh_email"]) == trim($_POST["email"])){
-                            if(password_verify($_POST["password"] , getAllUser()[$i]["kh_password"])){
-                                $_SESSION["user"] = getAllUser()[$i];
-                               if (getAllUser()[$i]["role"] == 1) {
-                                  header("location:".BASE_CLIENT."");
-                               }else{
-                                  header("location: ../admin/index.php");
-                               }
-                            }
-                        }else{
-                            header("location:".BASE_CLIENT."?dang-nhap");
-                        }
-                    }
-                    
-                }else{
-                    header("location:".BASE_CLIENT."?dang-nhap");
-                }
-            }
-            break;
-        // Trang sản phẩm
+            // Trang sản phẩm
         case 'san-pham':
-           
-            if(isset($_GET['cate'])){
+
+            if (isset($_GET['cate'])) {
                 $products =  getProductWhereCate($_GET['cate']);
-            }else if(isset($_GET['size'])){
+            } else if (isset($_GET['size'])) {
                 $products =  getProductWhereSize($_GET['size']);
-            }else if(isset($_GET['color'])){
+            } else if (isset($_GET['color'])) {
                 $products =  getProductWhereSize($_GET['color']);
-            }else if(isset($_GET['key_word'])){
+            } else if (isset($_GET['key_word'])) {
                 $key_word = $_GET['key_word'];
                 $products =  searchProduct(($_GET['key_word']));
-            }else{
+            } else {
                 $products =  getProductAll();
             }
             include('./views/product.php');
             break;
 
         case 'tim-kiem-san-pham':
-            if($_POST['key_word']){
-                header("location:".BASE_CLIENT."?url=san-pham&key_word=" .$_POST['key_word']);
+            if ($_POST['key_word']) {
+                header("location:" . BASE_CLIENT . "?url=san-pham&key_word=" . $_POST['key_word']);
             }
             break;
 
 
         case 'binh-luan':
-                if(isset($_SESSION["user"])){
-                   $_POST["kh_id"] = $_SESSION["user"]["kh_id"];
-                   commentProduct($_POST);
-                   header("location:".BASE_CLIENT."?url=san-pham-chi-tiet&id=". $_POST["sp_id"]."&dg=danh-gia");
-                }else{
-                    header("location:".BASE_CLIENT."?dang-nhap");
-                }
-                break;
+            if (isset($_SESSION["user"])) {
+                $_POST["kh_id"] = $_SESSION["user"]["kh_id"];
+                commentProduct($_POST);
+                header("location:" . BASE_CLIENT . "?url=san-pham-chi-tiet&id=" . $_POST["sp_id"] . "&dg=danh-gia");
+            } else {
+                header("location:" . BASE_CLIENT . "?dang-nhap");
+            }
+            break;
 
 
-         case 'binh-luan-delete':
-                if(isset($_GET["id"])){
-                    deleteCmtt($_GET["id"]);
-                    header('Location: ' . $_SERVER['HTTP_REFERER']);
-                }
-                   
-                break;
+        case 'binh-luan-delete':
+            if (isset($_GET["id"])) {
+                deleteCmtt($_GET["id"]);
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
+            }
+
+            break;
 
             // Sản phẩm chi tiết
-         case 'san-pham-chi-tiet':
+        case 'san-pham-chi-tiet':
             $error = '';
             $isDanhgia;
-            if(isset($_GET['dg'])){
-                $isDanhgia= $_GET['dg'];
+            if (isset($_GET['dg'])) {
+                $isDanhgia = $_GET['dg'];
             }
-            if(isset($_GET['id'])){
+            if (isset($_GET['id'])) {
+                $imageSub = getSubImage($_GET['id']);
                 $product = getProductFind($_GET['id']);
-                $productRelate= getProductWhereCate($product[0]["dm_id"]);
+                $productRelate = getProductWhereCate($product[0]["dm_id"]);
                 $comments = getCommentProduct($_GET['id']);
+                $isCheckUserBuyProduct = checkUserHasByProduct($_GET['id'], $_SESSION["user"]["kh_id"]);
             }
 
             include('./views/product-detail.php');
             break;
 
-        // Giỏ hàng (Bàng Quang Trường)
 
-        // Trang liên hệ
-         case 'lien-he':
-            include('./views/contact.php');
+            // Trang Blog
+        case 'blog':
+            include('./../model/blog.php');
+            $listblog = loadAllBlog();
+            include('./views/blog.php');
+            break;
+            // Trang Blog ci tiết
+        case 'blog_chitiet':
+            if (isset($_GET['id'])) {
+                include('./../model/blog.php');
+                $listdetailblog = blog_detail($_GET['id']);
+            }
+
+            include('./views/blog_detail.php');
+            break;
+        case 'xoa-gio-hang':
+            if ($_GET["id"]) {
+                // dd($_GET["id"]);
+                unset($_SESSION["cart"][$_GET["id"]]);
+            }
+            // Quay về trang trước
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
             break;
 
-        // Trang thanh toán
-         case 'thanh-toan':
-            if(!isset($_SESSION["user"])){
-                header("location:".BASE_CLIENT."?dang-nhap");
-            }elseif (!isset($_SESSION["cart"])) {
-                header("location:".BASE_CLIENT."?url=san-pham");
-            }else{
+            // Sản phẩm chi tiết
+        case 'add-gio-hang':
+            $product = getProductFind($_POST['id']);
+            $error = '';
+            if (!empty($_POST["size"]) && !empty($_POST["color"])) {
+                if (isset($_SESSION["cart"])) {
+                    $cart = $_SESSION["cart"];
+                    if (array_key_exists($_POST["id"], $cart)) {
+                        if (in_array($cart[$_POST["id"]]['size'], $cart[$_POST["id"]], true)) {
+                            $cart[$_POST["id"]] = [
+                                'id' => $_POST["id"],
+                                'name' => $product[0]["sp_name"],
+                                'img' => $product[0]["sp_image"],
+                                'size' => $cart[$_POST["id"]]['size'] . ',' . $_POST["size"] . '-' . 'Màu ' .  $_POST["color"],
+                                'price' => $product[0]["sp_sale"],
+                                'number' => $cart[$_POST["id"]]['number'] + $_POST["quantity"],
+                                'current-quantity' => $product[0]["sp_quantity"],
+                            ];
+                        } else {
+                            $cart[$_POST["id"]] = [
+                                'id' => $_POST["id"],
+                                'name' => $product[0]["sp_name"],
+                                'img' => $product[0]["sp_image"],
+                                'size' => $_POST["size"] . '-' .  'Màu ' .  $_POST["color"],
+                                'price' => $product[0]["sp_sale"],
+                                'number' => $cart[$_POST["id"]]['number'] + $_POST["quantity"],
+                                'current-quantity' => $product[0]["sp_quantity"],
+                            ];
+                        }
+                    } else {
+                        $cart[$_POST["id"]] = [
+                            'id' => $_POST["id"],
+                            'name' => $product[0]["sp_name"],
+                            'img' => $product[0]["sp_image"],
+                            'size' => $_POST["size"] . '-' .  'Màu ' .  $_POST["color"],
+                            'price' => $product[0]["sp_sale"],
+                            'number' =>  $_POST["quantity"],
+                            'current-quantity' => $product[0]["sp_quantity"],
+                        ];
+                    }
+                } else {
+                    $cart = [];
+                    $cart[$_POST["id"]] = [
+                        'id' => $_POST["id"],
+                        'name' => $product[0]["sp_name"],
+                        'img' => $product[0]["sp_image"],
+                        'size' => $_POST["size"] . '-' .  'Màu ' .  $_POST["color"],
+                        'price' => $product[0]["sp_sale"],
+                        'number' => $_POST["quantity"],
+                        'current-quantity' => $product[0]["sp_quantity"],
+                    ];
+                }
+                header("location:" . BASE_CLIENT . "?url=gio-hang");
+            } else {
+                $error = 'Bạn chưa chọn thuộc tính !!!';
+                include('./views/product-detail.php');
+            }
+
+            $_SESSION['cart'] = $cart;
+            break;
+
+            // Trang giỏ hàng
+        case 'gio-hang':
+            if (!isset($_SESSION["user"])) {
+                header("location:" . BASE_CLIENT . "?dang-nhap");
+            }
+            if (isset($_SESSION['cart'])) {
+                $cart = $_SESSION['cart'];
+                include('./views/cart.php');
+            } else {
+                header("Location: " . BASE_CLIENT . "?san-pham");
+            }
+
+            break;
+            // Trang giới thiệu
+        case 'gioi-thieu':
+            include('./views/intro.php');
+            break;
+            // Trang liên hệ
+        case 'lien-he':
+            include('./views/contact.php');
+            break;
+            // Trang profile 
+        case 'profile':
+            $_GET['id'] = $_SESSION["user"]["kh_id"];
+            $user = getUserId((int)$_GET['id']);
+            $order =  getOrderByIDUser($_GET['id']);
+            include('./views/profile.php');
+            break;
+        case 'hd_chitiet':
+
+            $order =  getOrderByID($_GET['id']);
+            $orderDetail = getOrderDetailByID($_GET['id']);
+            include('./views/order-detail.php');
+            break;
+        case 'infor-edit-save':
+            // $errorName = '';
+            // $errorImage = '';
+            // $errorPhone = '';
+            // $errorEmail = '';
+            // $errorPass = '';
+            $user = getUserId($_POST['kh_id']);
+            $fileName =  $_FILES["kh_avatar"]["name"];
+            move_uploaded_file($_FILES["kh_avatar"]["tmp_name"], '../upload/' .   $fileName);
+            $_POST['kh_avatar'] = $fileName;
+            // dd($_POST);
+            updateInfor($_POST, $_POST['kh_id']);
+            header("location:" . BASE_CLIENT . "?url=profile");
+            break;
+            // Trang thanh toán
+        case 'thanh-toan':
+            if (!isset($_SESSION["user"])) {
+                header("location:" . BASE_CLIENT . "?dang-nhap");
+            } elseif (!isset($_SESSION["cart"])) {
+                header("location:" . BASE_CLIENT . "?url=san-pham");
+            } else {
                 $user = $_SESSION["user"];
                 $cart =  $_SESSION['cart'];
                 // dd($user);
                 include('./views/pay.php');
-                break;  
+                break;
             }
 
-         // Trang lưu thanh toán
-         case 'luu-thanh-toan':
-           if($_POST){
-             try {
-                $idNew = insertOrder($_POST);
-                $cart =  $_SESSION['cart'];
-                foreach( $cart as $key => $value){
-                    insertOrderDetail($value ,  $idNew);
-                }
-                unset($_SESSION["cart"]);
-                $_SESSION['success'] = 'Thanh toán thành công !!!';
-             } catch (\Throwable $th) {
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-             };
-            header("location:".BASE_CLIENT."");
-           }
-           break;
-
-        // Trang chi tiết sản phẩm
-         case 'san_pham/chi-tiet':
+            // Trang lưu thanh toán
+        case 'luu-thanh-toan':
+            if ($_POST) {
+                try {
+                    $idNew = insertOrder($_POST);
+                    $cart =  $_SESSION['cart'];
+                    foreach ($cart as $key => $value) {
+                        insertOrderDetail($value,  $idNew);
+                    }
+                    unset($_SESSION["cart"]);
+                    $_SESSION['success'] = 'Thanh toán thành công !!!';
+                } catch (\Throwable $th) {
+                    header('Location: ' . $_SERVER['HTTP_REFERER']);
+                };
+                header("location:" . BASE_CLIENT . "");
+            }
+            break;
+        case 'cam-on':
+            include('./views/paySuccess.php');
+            break;
+            // Trang chi tiết sản phẩm
+        case 'san_pham/chi-tiet':
             include('./views/product-detail.php');
             break;
         default:
             # code...
             break;
     }
-}else{
+} else {
     $products =  getProductAll();
+    // dd($products);
     include('./views/home.php');
 }
 

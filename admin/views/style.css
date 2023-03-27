@@ -9,7 +9,7 @@ body{
 }
 
 .bg-main{
-    background-color: #FF577F;
+    background-color: #22A39F;
     color: #ffff;
     padding: 7px 10px;
     border-radius: 4px;
@@ -18,7 +18,7 @@ body{
 }
 
 .bg-main:hover{
-    background-color: #FF577F;
+    background-color: #22A39F;
     opacity: 0.9;
 }
 

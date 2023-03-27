@@ -14,7 +14,7 @@
                 <th scope="col">Giá</th>
                 <th scope="col">Giá giảm</th>
                 <th scope="col">SL</th>
-                <th scope="col text-center" width="80px">CMTT</th>
+                <th scope="col text-center" width="80px">COMMENT</th>
                 <th scope="col text-center" width="80px">Sửa</th>
                 <th scope="col text-center" width="80px">Xoá</th>
             </tr>

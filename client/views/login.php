@@ -29,14 +29,19 @@
             <h2 class="title_login">Đăng nhập</h2>
             <h4><a class="title_register" href="?dang-ky">Đăng ký</a></h4>
         </div>
-        <form action="index.php?url=dang-nhap-save" method="POST">
+        <div class="error-message">
+            <p class="message"></p>
+            <button onClick="closeMessage()" class="close-message"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="form_login" method="POST">
             <div class="input__bag">
                 <input class="contact__input" name="email" type="text" placeholder="Họ và tên">
             </div>
             <div class="input__bag">
                 <input class="contact__input" type="password"  name="password"  placeholder="Password">
             </div>
-            <button class="contact__btn ">Đăng nhập</button>
+            <button class="contact__btn btn_login">Đăng nhập</button>
         </form>
     </div>
 </div>
+<script src="./../assets/js/ajax-auth.js"></script>

@@ -9,6 +9,7 @@
                     <th scope="col">Ảnh</th>
                     <th scope="col">Email</th>
                     <th scope="col">Số điện thoại</th>
+                    <th scope="col">Địa chỉ</th>
                     <th scope="col">Quyền</th>
                     <th scope="col">Chỉnh sửa</th>
                 </tr>
@@ -21,6 +22,7 @@
                     <td><img style="width:50px;height:50px;border-radius:50px" src="../upload/<?=$item['kh_avatar'] ?>" alt=""></td>
                     <td><?=$item['kh_email'] ?></td>
                     <td><?=$item['kh_phone'] ?></td>
+                    <td><?=$item['kh_address'] ?></td>
                     <td><?=$item['role'] == 1 ? 'Khách hàng' : 'Quản trị' ?></td>
                     <td><a  href="index.php?url=account-edit&id=<?=$item['kh_id']?>" class="btn btn-warning">Sửa</a></td>
                 </tr>

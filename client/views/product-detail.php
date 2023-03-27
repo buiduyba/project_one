@@ -18,15 +18,11 @@
                     <div class="column">
                         <img src="./../upload/<?= $product[0]["sp_image"] ?>" alt="Nature" style="width:100%" onclick="myFunction(this);">
                     </div>
-                    <div class="column">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu4kVhpjc0rP9G11pdbuOTs9ptwZNgoO_tlQ&usqp=CAU" alt="Snow" style="width:100%" onclick="myFunction(this);">
-                    </div>
-                    <div class="column">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3PN_vFvRTsMK53gDly0EIIAt_Mzkq3DsnIA&usqp=CAU" alt="Mountains" style="width:100%" onclick="myFunction(this);">
-                    </div>
-                    <div class="column">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVdps4X4WZmcF7f1QTd_8LdoH8m3XXB46sbA&usqp=CAU" alt="Lights" style="width:100%" onclick="myFunction(this);">
-                    </div>
+                    <?php foreach ($imageSub as $item) : ?>
+                        <div class="column">
+                            <img src="./../upload/<?= $item["name"] ?>" alt="Snow" style="width:100%" onclick="myFunction(this);">
+                        </div>
+                    <?php endforeach ?>
                 </div>
             </div>
         </div>
@@ -36,15 +32,15 @@
                 <div class="header-product-info_right">
                     <h3 class="product-name"><?= $product[0]["sp_name"] ?></h3>
                     <div class="product-sale">
-                        <?= ceil(($product[0]["sp_price"] - trim($product[0]["sp_sale"])) * 100 / $product[0]["sp_price"]) ?>%
+                        -<?= ceil(($product[0]["sp_price"] - trim($product[0]["sp_sale"])) * 100 / $product[0]["sp_price"]) ?>%
                     </div>
                 </div>
                 <div class="product-item_price-wraper">
                     <div class="product-price-main">
-                        <?= number_format($product[0]['sp_price'], 0, ",", ".") ?>đ
+                        <?= number_format((int)$product[0]['sp_sale'], 0, ",", ".") ?>đ
                     </div>
                     <div class="product-price_sale color-text">
-                        <?= number_format(trim($product[0]['sp_sale']), 0, ",", ".") ?>đ
+                        <?= number_format(trim($product[0]['sp_price']), 0, ",", ".") ?>đ
                     </div>
                 </div>
                 <div class="product-atribute_box">
@@ -96,6 +92,8 @@
                 </div>
                 <div class="tab-item tablinks" <?= isset($isDanhgia)  ?  'id="defaultOpen"' : '' ?> onclick="openCity(event, 'Paris')">
                     ĐÁNH GIÁ</div>
+                <div class="tab-item tablinks" onclick="openCity(event, 'Tokyo')">
+                    CHÍNH SÁCH ĐỔI TRẢ</div>
             </div>
             <div id="London" class="tabcontent">
                 <?= $product[0]['sp_description'] ?>
@@ -192,7 +190,7 @@
                 }
             </style>
             <div id="Paris" class="tabcontent">
-                <?php if (isset($_SESSION["user"])) { ?>
+                <?php if (isset($_SESSION["user"]) && count($isCheckUserBuyProduct) > 0) { ?>
                     <form action="?url=binh-luan" method="POST" class="form-cmtt">
                         <input type="text" value="<?= $product[0]['sp_id'] ?>" name="sp_id" hidden>
                         <div class="form-control-cmtt">
@@ -203,6 +201,8 @@
                             </div>
                         </div>
                     </form>
+                <?php } else { ?>
+                    <h3>Vui lòng mua hàng để đánh giá sản phẩm!</h3>
                 <?php } ?>
                 <div class="all__cmtt">
                     <?php foreach ($comments as $key) { ?>
@@ -228,6 +228,10 @@
 
             </div>
 
+            <div id="Tokyo" class="tabcontent">
+                <h3>Hỗ trợ đổi trả trong vòng 7 ngày</h3>
+                <p>Hỗ trọ đổi trả hàng trong vòng 7 ngày kể từ khi nhận hàng. Được kiểm tra hàng trước khi thanh toán.</p>
+            </div>
         </div>
     </div>
     <style>
@@ -245,18 +249,14 @@
                 <div class="product-item_img-box">
                     <a href="index.php?url=san-pham-chi-tiet&id=<?= $item["sp_id"] ?>"> <img class="w-100" src="./../upload/<?= $item["sp_image"] ?>" alt=""></a>
                     <div class="product-item_percent">
-                        <?= ceil(($item["sp_price"] - trim($item["sp_sale"])) * 100 / $item["sp_price"]) ?>%</div>
+                        -<?= ceil(($item["sp_price"] - trim($item["sp_sale"])) * 100 / $item["sp_price"]) ?>%</div>
                 </div>
-                <div class="product-price-main" style="font-weight: bold; ">
-                        <?= $item['sp_name'] ?>
-                    </div>
                 <div class="product-item_price-wraper">
-
                     <div class="product-price-main">
-                        <?= number_format($item['sp_price'], 0, ",", ".") ?>đ
+                        <?= number_format((int)$item['sp_sale'], 0, ",", ".") ?>đ
                     </div>
                     <div class="product-price_sale">
-                        <?= number_format(trim($item['sp_sale']), 0, ",", ".") ?>đ
+                        <?= number_format(trim($item['sp_price']), 0, ",", ".") ?>đ
                     </div>
                 </div>
             </div>

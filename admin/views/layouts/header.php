@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Jevilor</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../admin/views/style.css">
@@ -19,41 +19,38 @@
 
 </head>
 <style>
-.navbar {
+.navbar-expand-lg {
     background-color: #22A39F;
+}
+
+.nav-menu-admin {
+    background-color: #27aba7;
 }
 </style>
 
 <body>
     <div class="header">
-        <nav class="navbar navbar-expand-lg ">
-            <div class="container-fluid">
-                <div class=" d-flex justify-content-between align-items-center">
-                    
-                <a class="navbar-brand text-white fs-3" href="#">Shop thời trang</a>
-                    <div class="dropdown">
-                        <?php if(isset($_SESSION["user"])){ ?>
-                        <img class="avatar  rounded-circle" data-bs-toggle="dropdown" aria-expanded="false"
-                            src="./../upload/<?=$_SESSION["user"]["kh_avatar"]?>" alt="">
-                        <ul class="dropdown-menu tab-user">
-                            <li><a class="dropdown-item" href="../client/index.php?logout">Đăng xuất</a></li>
-                        </ul>
-                        <?php }else{ ?>
-                        <a class="text-white" href="">Đăng nhập</a>
-                        <?php  } ?>
-                    </div>
+        <nav class="navbar-expand-lg p-2 px-3 container-fluid">
+            <div class=" d-flex justify-content-between align-items-center">
+
+                <a class="navbar-brand text-white fs-3" href="#">Jevilor</a>
+                <div class="dropdown">
+                    <?php if(isset($_SESSION["user"])){ ?>
+                    <img class="avatar  rounded-circle" data-bs-toggle="dropdown" aria-expanded="false"
+                        src="./../upload/<?=$_SESSION["user"]["kh_avatar"]?>" alt="">
+                    <ul class="dropdown-menu tab-user">
+                        <li><a class="dropdown-item" href="../client/index.php?logout">Đăng xuất</a></li>
+                    </ul>
+                    <?php }else{ ?>
+                    <a class="text-white" href="">Đăng nhập</a>
+                    <?php  } ?>
                 </div>
             </div>
         </nav>
     </div>
-    <style>
-        .nav-menu-admin{
-            background-color: #009EFF;
-        }
-    </style>
     <div class="row">
         <div class="col-2 nav-menu-admin">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav py-4">
                 <?php foreach($MenuAdmin as $item => $value){ ?>
                 <li class="nav-item">
                     <a class="nav-link" name="<?=$value["route"]?>"

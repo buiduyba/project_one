@@ -20,10 +20,10 @@ footer {
             HÃY LIÊN HỆ VỚI CHÚNG TÔI!
         </h3>
         <p class="text-center color-text">Luôn sẵn sáng hỗ trợ và tư vấn cho bạn để có sản phẩm tốt nhất.</p>
-        <div class="header-footer-form-box text-center">
+        <!-- <div class="header-footer-form-box text-center">
             <input placeholder="Tìm kiếm sản phẩm" class="header-footer-form-input" type="text">
             <button class="header-footer-form-btn">Gửi</button>
-        </div>
+        </div> -->
     </header>
     <div class="header-footer_main padding-container">
         <div class="header-footer_description">
@@ -44,11 +44,11 @@ footer {
         <div class="header-description color-primary">
             <h4 class="title-header">Thông tin liên hệ</h4>
             <ul class="header-contact_list">
-                <li class="li color-text"><i class="fa-solid fa-caret-right"></i> Tầng 4, tòa nhà Flemington, số
-                    182, đường Lê Đại Hành, phường 15, quận 11, Tp. Hồ Chí Minh.</li>
+                <li class="li color-text"><i class="fa-solid fa-caret-right"></i> Tầng 4, tòa nhà F, số
+                    100, đường Trịnh Văn Bô, phường Phương Canh, quận Nam Từ Liêm, Tp. Hà Nội.</li>
                 <li class="li color-text"><i class="fa-solid fa-caret-right"></i> 1900.636.099</li>
                 <li class="li color-text"><i class="fa-solid fa-caret-right"></i> 1900.636.099</li>
-                <li class="li color-text"><i class="fa-solid fa-caret-right"></i> hi@haravan.com</li>
+                <li class="li color-text"><i class="fa-solid fa-caret-right"></i> duybd7603@gmail.com</li>
             </ul>
         </div>
         <div class="header-description color-primary">
@@ -57,29 +57,73 @@ footer {
         </div>
     </div>
     <div class="footer-end">
-        <p class="color-text text-center">Copyright © 2022 Urban Home. Powered by Haravan</p>
+        <p class="color-text text-center">Copyright © 2022 Jevilor. Powered by Group 4</p>
     </div>
 </footer>
 </div>
 <div id="backTop">
     <i class="fa-solid fa-caret-up"></i>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-    crossorigin="anonymous"></script>
-
+<script>
+    //<![CDATA[
+    var _widget_settings = {
+        positions: 'bottom left',
+        support: {
+            staff: {
+                name: '',
+                image: '',
+                messages: 'Không biết em có thể hỗ trợ gì cho anh/chị không ạ?'
+            }
+        },
+        buttons: {
+            contact: {
+                visible: 'false',
+                id: '',
+                messages: 'Liên hệ'
+            },
+            email: {
+                visible: 'true',
+                id: 'duycia1230@gmail.com',
+                messages: 'Gửi email'
+            },
+            call: {
+                visible: 'true',
+                id: '0354618932',
+                messages: 'Gọi điện'
+            },
+            sms: {
+                visible: 'false',
+                id: '0354618932',
+                messages: 'Nhắn tin'
+            },
+            viber: {
+                visible: 'false',
+                id: 'vhost.vn',
+                messages: 'Chat Viber'
+            },
+            telegram: {
+                visible: 'false',
+                id: 'vHostbot',
+                messages: 'Chat Telegram'
+            },
+            zalo: {
+                visible: 'true',
+                id: '0354618932',
+                messages: 'Chat Zalo'
+            },
+            facebook: {
+                visible: 'true',
+                id: 'bdduy1103',
+                messages: 'Chat Facebook'
+            }
+        }
+    }
+    //]]>
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+<script src='https://cdn.jsdelivr.net/gh/thietkeblogspot/js/contact-buttons-widget.min.js'></script>
 <script src="./../assets/js/back-top.js"></script>
 <script src="./../assets/js/list-cart.js"></script>
-<script>
-function openCart() {
-
-    document.getElementById("mySidenav").style.width = "350px";
-
-}
-
-function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-}
-</script>
 
 </body>
 

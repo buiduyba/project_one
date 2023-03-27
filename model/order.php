@@ -1,9 +1,10 @@
 <?php
 // Thêm sản phẩm
-function insertOrder($data){
+function insertOrder($data)
+{
     $conn = connect();
     $stmt = $conn->prepare("INSERT INTO `order`
-    (`kh_name`, `kh_email`, `kh_phone`, `kh_address`, `kh_content`, `kh_id`)
+     (`kh_name`, `kh_email`, `kh_phone`, `kh_address`, `kh_content`, `kh_id`)
      VALUES ( '".$data["kh_name"]."' , '".$data["kh_email"]."' ,'".$data["kh_phone"]." ','".$data["kh_address"]."' ,  '".$data["kh_content"]."' , ".(int)$data["kh_id"].")");
     $stmt->execute();
     $idNew = $conn->lastInsertId();
@@ -11,7 +12,8 @@ function insertOrder($data){
 }
 
 // Lấy tất của hóa đơn
-function orderAll(){
+function orderAll()
+{
     $conn = connect();
     $stmt = $conn->prepare("SELECT *  FROM `order`");
     $stmt->execute();
@@ -21,7 +23,8 @@ function orderAll(){
 }
 
 // Get order where ID
-function getOrderByID($id){
+function getOrderByID($id)
+{
     $conn = connect();
     $stmt = $conn->prepare("SELECT *  FROM `order` WHERE  `hd_id`= $id");
     $stmt->execute();
@@ -29,9 +32,19 @@ function getOrderByID($id){
     $result = $stmt->fetchAll();
     return $result;
 }
-
+// Get order where ID user
+function getOrderByIDUser($id)
+{
+    $conn = connect();
+    $stmt = $conn->prepare("SELECT *  FROM `orderdetail` join `user` WHERE  `kh_id`= $id");
+    $stmt->execute();
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $result = $stmt->fetchAll();
+    return $result;
+}
 // Get order where ID
-function getOrderDetailByID($id){
+function getOrderDetailByID($id)
+{
     $conn = connect();
     $stmt = $conn->prepare("SELECT *  FROM `orderdetail` WHERE  `hd_id`= $id");
     $stmt->execute();
@@ -41,20 +54,36 @@ function getOrderDetailByID($id){
 }
 
 // Xóa hóa đơn
-function orderDelete($id){
+function orderDelete($id)
+{
     $conn = connect();
-    $stmt = $conn->prepare("DELETE FROM `order` WHERE `hd_id` = ".$id);
+    $stmt = $conn->prepare("DELETE FROM `order` WHERE `hd_id` = " . $id);
     $stmt->execute();
 }
 
+function updateStatus($data){
+    $conn = connect();
+    $stmt = $conn->prepare("UPDATE  `orderdetail`  
+    SET `status` =  ". $data["status"]." WHERE `hd_id` = ". $data["id"]."");
+    $stmt->execute();
+}
 
 //Thêm Hóa đơn chi tiết 
-function insertOrderDetail($data , $orderId){
+function insertOrderDetail($data, $orderId)
+{
     $conn = connect();
     $stmt = $conn->prepare("INSERT INTO `orderdetail`
     (`sp_name`, `sp_image`, `sp_price`, `sp_quantity`, `hd_id`, `sp_id`)
-     VALUES ('".$data["name"]."','".$data["img"]."','".$data["price"]."','".$data["number"]."',".$orderId.",".$data["id"].")");
+     VALUES ('" . $data["name"] . "','" . $data["img"] . "','" . $data["price"] . "','" . $data["number"] . "'," . $orderId . "," . $data["id"] . ")");
     $stmt->execute();
 }
 
-?>
+// Lưu thanh toán Momo
+function insertOrderMomo($data, $orderId)
+{
+    $conn = connect();
+    $stmt = $conn->prepare("INSERT INTO `orderdetail`
+    (`sp_name`, `sp_image`, `sp_price`, `sp_quantity`, `hd_id`, `sp_id`, `status`)
+     VALUES ('" . $data["name"] . "','" . $data["img"] . "','" . $data["price"] . "','" . $data["number"] . "'," . $orderId . "," . $data["id"] . "," . $data["status"] . ")");
+    $stmt->execute();
+}

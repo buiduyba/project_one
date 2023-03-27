@@ -10,6 +10,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    margin-bottom: 15px;
 }
 
 .title_login{
@@ -27,10 +28,22 @@
     border-radius: 10px;
     text-align: center;
     width: 350px;
+   
 }
 
 .input__bag {
     margin: 30px 0px;
+}
+
+.error-message{
+    padding: 8px 10px;
+    background-color: #CD104D;
+    border: 2px solid #E0144C;
+    color: #ffff;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    display: none;
+    justify-content: space-between;
 }
 
 
@@ -40,6 +53,7 @@
     width: 100%;
     border-bottom: 1px solid rgb(141, 139, 139);
     font-size: 15px;
+    padding-bottom: 10px;
 }
 
 .contact__btn {

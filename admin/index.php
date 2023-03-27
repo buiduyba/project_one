@@ -6,103 +6,103 @@ include('./../model/category.php');
 include('./../model/product.php');
 include('./../model/size.php');
 include('./../model/order.php');
+include('./../model/blog.php');
 include('./../model/user.php');
 include('./../helper/dd.php');
+
 include('./../helper/baseUrl.php');
 include('./../helper/route-menu-admin.php');
 
 // -------------------------------------------
 include('./views/layouts/header.php');
 
-if(isset($_GET['url']) && isset($_SESSION["user"])){
+if (isset($_GET['url']) && isset($_SESSION["user"])) {
     switch ($_GET['url']) {
-        
-        // Trang danh sách danh mục
+
+            // Trang danh sách danh mục
         case 'category':
-            
-            $error= '';
+
+            $error = '';
             $cates = getCateAll();
             include('./views/category/index.php');
             break;
-         // Thêm danh mục
+            // Thêm danh mục
         case 'category-add':
-           $cates = getCateAll();
-            if(empty($_POST['dm_name'])){
+            $cates = getCateAll();
+            if (empty($_POST['dm_name'])) {
                 $error = 'Error';
-            }else{
+            } else {
                 insertCate($_POST['dm_name']);
             }
 
-           header("location:".BASE_ADMIN."category");
-           break;
-          // Xóa danh mục
+            header("location:" . BASE_ADMIN . "category");
+            break;
+            // Xóa danh mục
         case 'category-delete':
             $cates = getCateAll();
-            if(isset($_GET['id'])){
-              
-              deleteCate($_GET['id']);
-            }else{
-              echo 'Error';
-              die;
+            if (isset($_GET['id'])) {
+
+                deleteCate($_GET['id']);
+            } else {
+                echo 'Error';
+                die;
             }
-            header("location:".BASE_ADMIN."category");
+            header("location:" . BASE_ADMIN . "category");
             break;
-        // Sửa danh mục
+            // Sửa danh mục
         case 'category-edit':
-            echo "ngoductruong";
-            $error= '';
+            $error = '';
             $cates = getCateAll();
-            if($_GET['id']){
-               $cate = getFind($_GET['id']);
-            //    dd($cate);
-               include('./views/category/index.php');
-            }else{
+            if ($_GET['id']) {
+                $cate = getFind($_GET['id']);
+                //    dd($cate);
+                include('./views/category/index.php');
+            } else {
                 echo 'ERROR';
                 die;
             }
-
             break;
-        // Trang lưu sửa
+            // Trang lưu sửa
         case 'category-edit-save':
             $cates = getCateAll();
-    
-            if(!empty($_POST['dm_name']) && !empty($_POST['id'])){
-                updateCate($_POST['dm_name'] ,$_POST['id']);
-            }else{
+
+            if (!empty($_POST['dm_name']) && !empty($_POST['id'])) {
+                updateCate($_POST['dm_name'], $_POST['id']);
+            } else {
                 echo 'Chưa nhập gì !!!';
-            die;
+                die;
             }
-            header("location:".BASE_ADMIN."category");
+            header("location:" . BASE_ADMIN . "category");
             break;
-        // Trang sản phẩm
+            // Trang sản phẩm
         case 'product':
             $product = getProductAll();
             include('./views/product/index.php');
-        break;
+            break;
 
-        // Trang sản phẩm bình luận
+            // Trang sản phẩm bình luận
         case 'product-cmtt':
-          if(isset($_GET['id'])){
-            $comments = getCommentProduct($_GET['id']);
-          }
+            if (isset($_GET['id'])) {
+                $comments = getCommentProduct($_GET['id']);
+            }
             include('./views/product/comment.php');
-        break;
+            break;
 
-          // Xóa sản phẩm
-          case 'product-cmtt-delete':
-            if(isset($_GET['id'])){
-               deleteCmtt($_GET['id']);
-              header('Location: ' . $_SERVER['HTTP_REFERER']);
+            // Xóa sản phẩm
+        case 'product-cmtt-delete':
+            if (isset($_GET['id'])) {
+                deleteCmtt($_GET['id']);
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
             }
             //   include('./views/product/comment.php');
-          break;
-        // Trang thêm sản phẩm
+            break;
+            // Trang thêm sản phẩm
         case 'product-form-add':
             $size = getSizeAll();
             $cate = getCateAll();
             include('./views/product/form.php');
-        break;
-          // Lưu thêm sản phẩm
+            break;
+            // Lưu thêm sản phẩm
         case 'product-form-add-save':
             $size = getSizeAll();
             $cate = getCateAll();
@@ -110,67 +110,77 @@ if(isset($_GET['url']) && isset($_SESSION["user"])){
             $errorImage = '';
             $errorPrice = '';
             $errorCate = '';
-            $errorPriceSale = ''; 
+            $errorPriceSale = '';
             $errorQuantity = '';
             $errorSize = '';
-           
-            if(!empty($_POST["sp_price"]) && !empty($_POST["sp_sale"])){
-                if((int)$_POST["sp_price"]    < (int)$_POST["sp_sale"]){
+
+            if (!empty($_POST["sp_price"]) && !empty($_POST["sp_sale"])) {
+                if ((int)$_POST["sp_price"]    < (int)$_POST["sp_sale"]) {
                     $errorPriceSale = 'Giá giảm phải nhỏ hơn giá gốc !!!';
                 }
             }
-            if(!isset($_FILES["sp_image"]["name"])){
+            if (!isset($_FILES["sp_image"]["name"])) {
                 $errorImage = "Bạn chưa chọn ảnh !!!";
             }
-            if(empty($_POST["sp_price"])){
+            if (empty($_POST["sp_price"])) {
                 $errorPrice = 'Bạn chưa nhập giá !!!';
             }
-            if(empty($_POST["dm_id"])){
+            if (empty($_POST["dm_id"])) {
                 $errorCate = 'Bạn chưa chọn danh mục !!!';
             }
-            if( empty($_POST["kt_id"])){
+            if (empty($_POST["kt_id"])) {
                 $errorSize = "Bạn chưa chọn kích thước !!!";
             }
-            if(empty($_POST["sp_quantity"])){
+            if (empty($_POST["sp_quantity"])) {
                 $errorQuantity = 'Chưa nhập số lượng !!!';
             }
-            if(empty($_POST["sp_name"])){
-                    $errorName = "Bạn chưa nhập tên sản phẩm !!!";
+            if (empty($_POST["sp_name"])) {
+                $errorName = "Bạn chưa nhập tên sản phẩm !!!";
             }
 
-            if(empty($errorSize) &&  empty($errorName) && empty($errorImage) && empty($errorPrice) && empty($errorCate) && empty($errorQuantity) && empty($errorPriceSale) ){
+            if (empty($errorSize) &&  empty($errorName) && empty($errorImage) && empty($errorPrice) && empty($errorCate) && empty($errorQuantity) && empty($errorPriceSale)) {
                 $fileName =  $_FILES["sp_image"]["name"];
-                move_uploaded_file( $_FILES["sp_image"]["tmp_name"]  ,'../upload/' .   $fileName );
-                $_POST['sp_image'] =$fileName;
-                insertProduct($_POST);
-                header("location:".BASE_ADMIN."product");
-            }else{
+                move_uploaded_file($_FILES["sp_image"]["tmp_name"], '../upload/' .   $fileName);
+                $_POST['sp_image'] = $fileName;
+                $idNew = insertProduct($_POST);
+                if (isset($_FILES['sub_image'])) {
+                    $fileImageSub = $_FILES['sub_image'];
+                    $check = false;
+                    foreach ($fileImageSub["name"] as $item) {
+                        insertSubImage($idNew, $item);
+                    }
+                    for ($i = 0; $i < count($fileImageSub["tmp_name"]); $i++) {
+                        move_uploaded_file($fileImageSub["tmp_name"][$i], '../upload/' .   $fileImageSub["name"][$i]);
+                    }
+                }
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
+            } else {
                 include('./views/product/form.php');
             }
-        break;
+            break;
         case 'product-delete':
-            if(isset($_GET['id'])){
+            if (isset($_GET['id'])) {
                 deleteProduct($_GET['id']);
-              }else{
+            } else {
                 echo 'Error';
                 die;
-              }
-              header("location:".BASE_ADMIN."product");
-              break;
-        break;
+            }
+            header("location:" . BASE_ADMIN . "product");
+            break;
+            break;
         case 'product-edit':
             $size = getSizeAll();
             $cate = getCateAll();
-            
-            if(isset($_GET['id'])){
+
+            if (isset($_GET['id'])) {
                 $product = getProductFind($_GET['id']);
                 include('./views/product/edit.php');
-              }else{
+            } else {
                 echo 'Error';
                 die;
-              }
-              break;
-        break;
+            }
+            break;
+            break;
         case 'product-edit-save':
             $size = getSizeAll();
             $cate = getCateAll();
@@ -178,120 +188,174 @@ if(isset($_GET['url']) && isset($_SESSION["user"])){
             $errorImage = '';
             $errorPrice = '';
             $errorCate = '';
-            $errorPriceSale = ''; 
+            $errorPriceSale = '';
             $errorQuantity = '';
             $errorSize = '';
             $product = getProductFind($_POST['sp_id']);
-            if(!empty($_POST["sp_price"]) && !empty($_POST["sp_sale"])){
-                if((int)$_POST["sp_price"]    < (int)$_POST["sp_sale"]){
+            if (!empty($_POST["sp_price"]) && !empty($_POST["sp_sale"])) {
+                if ((int)$_POST["sp_price"]    < (int)$_POST["sp_sale"]) {
                     $errorPriceSale = 'Giá giảm phải lớn hơn giá gốc !!!';
                 }
             }
-            if(!isset($_FILES["sp_image"]["name"])){
+            if (!isset($_FILES["sp_image"]["name"])) {
                 $errorImage = "Bạn chưa chọn ảnh !!!";
             }
-            if(empty($_POST["sp_price"])){
+            if (empty($_POST["sp_price"])) {
                 $errorPrice = 'Bạn chưa nhập giá !!!';
             }
-            if(empty($_POST["dm_id"])){
+            if (empty($_POST["dm_id"])) {
                 $errorCate = 'Bạn chưa chọn danh mục !!!';
             }
-            if( empty($_POST["kt_id"])){
+            if (empty($_POST["kt_id"])) {
                 $errorSize = "Bạn chưa chọn kích thước !!!";
             }
-            if(empty($_POST["sp_quantity"])){
+            if (empty($_POST["sp_quantity"])) {
                 $errorQuantity = 'Chưa nhập số lượng !!!';
             }
-            if(empty($_POST["sp_name"])){
-                    $errorName = "Bạn chưa nhập tên sản phẩm !!!";
+            if (empty($_POST["sp_name"])) {
+                $errorName = "Bạn chưa nhập tên sản phẩm !!!";
             }
 
-            if(empty($errorSize) &&  empty($errorName) && empty($errorImage) && empty($errorPrice) && empty($errorCate) && empty($errorQuantity) && empty($errorPriceSale)){
+            if (empty($errorSize) &&  empty($errorName) && empty($errorImage) && empty($errorPrice) && empty($errorCate) && empty($errorQuantity) && empty($errorPriceSale)) {
                 $fileName =  $_FILES["sp_image"]["name"];
-            
-                move_uploaded_file( $_FILES["sp_image"]["tmp_name"]  ,'../upload/' .   $fileName );
-                $_POST['sp_image'] =$fileName;
+
+                move_uploaded_file($_FILES["sp_image"]["tmp_name"], '../upload/' .   $fileName);
+                $_POST['sp_image'] = $fileName;
                 // dd($_POST);
-                updateProduct($_POST , $_POST['sp_id']);
-                header("location:".BASE_ADMIN."product");
-              }else{
+                updateProduct($_POST, $_POST['sp_id']);
+                header("location:" . BASE_ADMIN . "product");
+            } else {
                 include('./views/product/edit.php');
-              }
-           
-              break;
-        break;
-        // Quản lý thuộc tính
+            }
+
+            break;
+            break;
+            // Quản lý thuộc tính
         case 'propertie':
             $size = getSizeAll();
             include('./views/propertie/index.php');
             break;
-        // Lưu thuộc tính thuộc tính
+            // Lưu thuộc tính thuộc tính
         case 'propertie-add-save':
             insertSize($_POST);
-            header("location:".BASE_ADMIN."propertie");
+            header("location:" . BASE_ADMIN . "propertie");
             break;
-         // Lưu thuộc tính thuộc tính
+            // Lưu thuộc tính thuộc tính
         case 'propertie-delete':
-            if(isset($_GET['id'])){
+            if (isset($_GET['id'])) {
                 deleteSize($_GET['id']);
-              }else{
+            } else {
                 echo 'Error';
-                die;
-              }
-            header("location:".BASE_ADMIN."propertie");
-            break;
-           // Trang sửa thuộc tính
-        case 'propertie-edit':
-            if(isset($_GET['id'])){
-                $propertie =  getFindCate($_GET['id']); 
-                $size = getSizeAll();              
-              }else{
-                echo 'Error';
-                die;
-              }
-              include('./views/propertie/index.php');
-            break;
-        case 'propertie-edit':
-            if(isset($_GET['id'])){
-                $propertie =  getFindCate($_GET['id']); 
-                $size = getSizeAll();              
-            }else{
-                 echo 'Error';
-                die;
-        }
-            include('./views/propertie/index.php');
-            break;
-         case 'propertie-edit-save':
-            // dd($_POST);
-            if(!empty($_POST)){
-                updateSize($_POST);       
-            }else{
-                 echo 'Error';
                 die;
             }
-            header("location:".BASE_ADMIN."propertie");
+            header("location:" . BASE_ADMIN . "propertie");
+            break;
+            // Trang sửa thuộc tính
+        case 'propertie-edit':
+            if (isset($_GET['id'])) {
+                $propertie =  getFindCate($_GET['id']);
+                $size = getSizeAll();
+            } else {
+                echo 'Error';
+                die;
+            }
+            include('./views/propertie/index.php');
+            break;
+        case 'propertie-edit':
+            if (isset($_GET['id'])) {
+                $propertie =  getFindCate($_GET['id']);
+                $size = getSizeAll();
+            } else {
+                echo 'Error';
+                die;
+            }
+            include('./views/propertie/index.php');
+            break;
+        case 'propertie-edit-save':
+            // dd($_POST);
+            if (!empty($_POST)) {
+                updateSize($_POST);
+            } else {
+                echo 'Error';
+                die;
+            }
+            header("location:" . BASE_ADMIN . "propertie");
 
-            break; 
+            break;
+            //Blog
+        case 'blog':
+            $listblog = loadAllBlog();
+            include('./views/blog/index.php');
+            break;
+            //Xóa blog
+        case 'delete_blog':
+            if (isset($_GET['id'])) {
+                deleteBlog($_GET['id']);
+            } else {
+                echo 'Error';
+                die;
+            }
+            header("location:" . BASE_ADMIN . "blog");
+            break;
+            break;
+            //thêm blog
+        case 'blog-add':
+            include('./views/blog/form_blog.php');
+            break;
+            //lưu thêm blog
+        case 'blog-add-sv':
+            if (isset($_POST['tieude'])) {
+                insertblog($_POST);
+            } else {
+                echo 'Error';
+                die;
+            }
+            header("location:" . BASE_ADMIN . "blog");
+
+            break;
+            //edit blog
+        case 'blog-edit':
+            if (isset($_GET['id'])) {
+                $blog = blog_detail($_GET['id']);
+                include('./views/blog/form_edit.php');
+            } else {
+                echo 'Error';
+                die;
+            }
+            break;
+            # code..
+            break;
+            //lưu sửa blog
+        case 'blog-add-edit-sv':
+            if (isset($_POST['id'])) {
+                updateblog($_POST, $_POST['id']);
+            } else {
+                echo 'Error';
+                die;
+            }
+            header("location:" . BASE_ADMIN . "blog");
+
+            break;
         case 'trang-chinh':
             include('./views/main.php');
             break;
 
         case 'account':
             $user = getAllUser();
-    
+
             include('./views/account/index.php');
             break;
 
         case 'account-edit':
             $user = getUserId((int)$_GET['id']);
-    
+
             include('./views/account/edit.php');
             break;
 
 
         case 'account-edit-save':
             updateUser($_POST);
-            header("location:".BASE_ADMIN."account");
+            header("location:" . BASE_ADMIN . "account");
             break;
 
         case 'order':
@@ -300,30 +364,32 @@ if(isset($_GET['url']) && isset($_SESSION["user"])){
             break;
 
         case 'order-delete-save':
-            if(isset($_GET['id'])){
+            if (isset($_GET['id'])) {
                 orderDelete($_GET['id']);
             }
-            header("location:".BASE_ADMIN."order");
-            break; 
-
-        // Chi tiết hóa đơn
-        case 'order-detail':
-            if(isset($_GET['id'])){
-               $order =  getOrderByID($_GET['id']);
-               $orderDetail = getOrderDetailByID($_GET['id']);
-               include('./views/order/detail.php');
-            }
-            break; 
-        default:
-            # code..
+            header("location:" . BASE_ADMIN . "order");
             break;
-    }
-}else if(isset($_SESSION["user"])){
+
+            // Chi tiết hóa đơn
+        case 'order-detail':
+            if (isset($_GET['id'])) {
+                $order =  getOrderByID($_GET['id']);
+                $orderDetail = getOrderDetailByID($_GET['id']);
+                include('./views/order/detail.php');
+            }
+            break;
+        case 'order-edit-save':
+            $orderst = getOrderByIDUser($_POST['id']);
+            updateStatus($_POST);
+            header("location:" . BASE_ADMIN . "order");
+            break;
+        }
+} else if (isset($_SESSION["user"])) {
     // Trang chính
     $chart = cateChart();
     include('./views/main.php');
-}else{
-    header("location:".BASE_CLIENT."?dang-nhap");
+} else {
+    header("location:" . BASE_CLIENT . "?dang-nhap");
 }
 
 include('./views/layouts/footer.php');

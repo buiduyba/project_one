@@ -46,5 +46,8 @@ function updateSize($data){
     $stmt = $conn->prepare("UPDATE  size  
     SET kt_name = '".$data["kt_name"]."', kieu_display=".$data["kieu_display"].", ma_color='".$data["ma_color"]."'  WHERE size.kt_id = ".$data["id"]."");
     $stmt->execute();
+    return true;
 }
+
+
 ?>

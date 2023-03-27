@@ -55,6 +55,8 @@ function insertProduct($data){
     (sp_name, sp_image, sp_price, sp_sale, sp_quantity, dm_id, sp_description, kt_id)
      VALUES ('".$data["sp_name"]."' , '".$data["sp_image"]."' ,' ".$data["sp_price"]."' ,'".$data["sp_sale"]." ',  ".(int)$data["sp_quantity"]." , ".(int)$data["dm_id"]." ,  '".$data["sp_description"]."' ,".(int)$data["kt_id"].")");
     $stmt->execute();
+    $idNew = $conn->lastInsertId();
+    return $idNew;
 }
 
 // Update sản phẩm
@@ -92,9 +94,39 @@ function getCommentProduct($id){
     return $result;
 }
 
+function checkUserHasByProduct($id, $id_user){
+    $conn = connect();
+    $stmt = $conn->prepare("SELECT  * FROM `user` INNER JOIN `order` ON order.kh_id = user.kh_id
+     INNER JOIN `orderdetail` ON order.hd_id = orderdetail.hd_id 
+     INNER JOIN `product` ON orderdetail.sp_id = product.sp_id 
+     WHERE product.sp_id = $id AND order.kh_id = $id_user");
+    $stmt->execute();
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $result = $stmt->fetchAll();
+    return $result;
+}
+
 function deleteCmtt($id){
     $conn = connect();
-    $sql = "DELETE FROM comment WHERE comment.cntt_id = ".(int)$id;
+    $sql = "DELETE FROM comment WHERE comment.cntt_id =" .(int)$id;
     $conn->exec($sql);
 }
+
+function insertSubImage($id, $fileName){
+    // dd($fileName);
+    $conn = connect();
+    $stmt = $conn->prepare("INSERT INTO `sub_image`(`name`, `sp_id`) VALUES ('". $fileName."','".(int)$id."')");
+    $stmt->execute();
+    
+}
+
+function  getSubImage($id){
+    $conn = connect();
+    $stmt = $conn->prepare("SELECT * FROM `sub_image` WHERE  `sp_id`=".(int)$id." LIMIT 3");
+    $stmt->execute();
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $result = $stmt->fetchAll();
+    return $result;
+}
+
 

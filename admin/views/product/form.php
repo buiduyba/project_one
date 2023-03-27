@@ -18,7 +18,7 @@
                 <img width="200px" id="blah"
                     src="https://thaihabooks.com/wp-content/themes/nhasachthaiha/assets/images/default-thumbnail.jpg" />
             </div>
-            <div class="mb-3">
+            <div class="mb-3" style="margin-top:17px">
                 <label for="exampleInputPassword1" class="form-label">Giá</label>
                 <input type="text" class="form-control" name="sp_price" placeholder="Giá sản phẩm"
                     id="exampleInputPassword1">
@@ -34,6 +34,7 @@
                 </select>
                 <p class="text-danger"><?= !empty($errorCate) ? $errorCate : ''  ?></p>
             </div>
+          
         </div>
         <div class="col-6">
 
@@ -66,6 +67,11 @@
                         style="height: 120px"></textarea>
                     <label for="floatingTextarea2">Giới thiệu</label>
                 </div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Ảnh phụ</label>
+                <input type="file" class="form-control" multiple name="sub_image[]" 
+                    id="exampleInputPassword1">
             </div>
             <button class="float-end mt-2 bg-main">Thêm sản phẩm</button>
         </div>
